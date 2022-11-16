@@ -1,9 +1,12 @@
 import  express from "express"
 import products from "./data/products.js"
+import connectDb from "./config/db.js"
 import  dotenv from "dotenv"
 const app = express()
 // adding dotenv
 dotenv.config()
+// connection string
+connectDb()
 const Port = process.env.Port || 5000
 app.listen(Port, console.log(`server is running in ${process.env.NODE_ENV} mode on the port ${Port}`))
 app.get("/", (req, res) => {
