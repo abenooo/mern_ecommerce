@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node backend/test",
     "server":"nodemon backend/test",
-    "client":"npm start --prefix frontend"
+    "client":"npm start --prefix frontend",
+    "dev":"concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
