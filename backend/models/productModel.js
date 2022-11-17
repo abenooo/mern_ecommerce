@@ -12,6 +12,9 @@ const reviewSchema = mongoose.Schema({
         type: String,
         required: true
     }
+
+}, {
+    timestamps: true
 })
 const productSchema = mongoose.Schema({
     user: {
@@ -57,3 +60,5 @@ const productSchema = mongoose.Schema({
         default: 0
     },
 })
+const Product = mongoose.model('Product', productSchema)
+export default Product
