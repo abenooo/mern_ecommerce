@@ -3,7 +3,7 @@ import connectDb from "./config/db.js"
 import dotenv from "dotenv"
 import colors from "colors"
 import productRoutes from "./routes/productRoutes.js"
-import { notFound, errorHandler } from "./middleware/errorMiddleware"
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 // adding dotenv
 dotenv.config()
     // connection string
