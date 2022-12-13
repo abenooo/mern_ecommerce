@@ -91,8 +91,9 @@ const ProductScreen = () => {
                     </Row>
                   </ListGroupItem>
 
+
                   {product.countInStock > 0 && (
-                    <ListGroup>
+                    <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
                         <Col>
@@ -111,8 +112,9 @@ const ProductScreen = () => {
                           </Form.Control>
                         </Col>
                       </Row>
-                    </ListGroup>
+                    </ListGroup.Item>
                   )}
+
 
                   <ListGroup.Item>
                     <div className='d-grid'>
