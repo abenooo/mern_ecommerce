@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Form, Link } from "react-router-dom"
 import {
   Row,
   Col,
@@ -9,25 +9,25 @@ import {
   Container,
   ListGroupItem,
 } from "react-bootstrap"
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux"
 import Rating from "../componets/Rating"
-import { useEffect } from "react"
-import Message from '../componets/Message.js'
-import Loader from '../componets/Loader.js'
-import { useParams } from 'react-router-dom';
-import {
-  listProductDetails
-} from '../actions/productActions'
+import { useState, useEffect } from "react"
+import Message from "../componets/Message.js"
+import Loader from "../componets/Loader.js"
+import { useParams } from "react-router-dom"
+import { listProductDetails } from "../actions/productActions"
 const ProductScreen = () => {
+  // create qty and assign 0 default
+  const [qty, setQty] = useState([0])
   // cretae empty  state
-  const { id } = useParams();
+  const { id } = useParams()
   console.log(id)
- const dispatch = useDispatch()
- const productDetails = useSelector((state) => state.productDetails)
- const { loading, error, product } = productDetails 
- useEffect(() => {
-  dispatch(listProductDetails(id))
-  }, [dispatch,id])
+  const dispatch = useDispatch()
+  const productDetails = useSelector((state) => state.productDetails)
+  const { loading, error, product } = productDetails
+  useEffect(() => {
+    dispatch(listProductDetails(id))
+  }, [dispatch, id])
   return (
     <>
       <Container>
@@ -35,76 +35,102 @@ const ProductScreen = () => {
           Back
         </Link>
         {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : (
-        <Row>
-          <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
-          </Col>
-          <Col md={3}>
-            <ListGroup>
-              <ListGroup.Item>{product.name}</ListGroup.Item>
-              <ListGroup.Item>
-                <Rating
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                />
-              </ListGroup.Item>
-
+          <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
+        ) : (
+          <Row>
+            <Col md={6}>
+              <Image src={product.image} alt={product.name} fluid />
+            </Col>
+            <Col md={3}>
               <ListGroup>
-                <h6>Price $ {product.price}</h6>
-              </ListGroup>
-              <ListGroup>
-                <h6>Description {`${product.description}`}</h6>:
-              </ListGroup>
-            </ListGroup>
-          </Col>
-
-          <Col md={3}>
-            <Card>
-              <ListGroup variant='flush'>
-                <ListGroupItem>
-                  <Row>
-                    <Col>Price</Col>
-                    <Col>
-                      <strong>${product.price}</strong>
-                    </Col>
-                  </Row>
-                </ListGroupItem>
-              </ListGroup>
-
-              {/* status */}
-              <ListGroup variant='flush'>
-                <ListGroupItem>
-                  <Row>
-                    <Col>Status</Col>
-                    <Col>
-                      <strong>
-                        $
-                        {product.countInStock > 0 ? "In stock" : "Out of stack"}
-                      </strong>
-                    </Col>
-                  </Row>
-                </ListGroupItem>
+                <ListGroup.Item>{product.name}</ListGroup.Item>
                 <ListGroup.Item>
-                  <div className='d-grid'>
-                    <Button
-                      className='btn btn-block'
-                      type='button'
-                      // disable add to cart button if the product is out of stock
-                      disabled={product.countInStock === 0}
-                    >
-                      Add To Cart
-                    </Button>
-                  </div>
+                  <Rating
+                    value={product.rating}
+                    text={`${product.numReviews} reviews`}
+                  />
                 </ListGroup.Item>
+
+                <ListGroup>
+                  <h6>Price $ {product.price}</h6>
+                </ListGroup>
+                <ListGroup>
+                  <h6>Description {`${product.description}`}</h6>:
+                </ListGroup>
               </ListGroup>
-            </Card>
-          </Col>
-        </Row>
-      )}
+            </Col>
+
+            <Col md={3}>
+              <Card>
+                <ListGroup variant='flush'>
+                  <ListGroupItem>
+                    <Row>
+                      <Col>Price</Col>
+                      <Col>
+                        <strong>${product.price}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroupItem>
+                </ListGroup>
+
+                {/* status */}
+                <ListGroup variant='flush'>
+                  <ListGroupItem>
+                    <Row>
+                      <Col>Status</Col>
+                      <Col>
+                        <strong>
+                          $
+                          {product.countInStock > 0
+                            ? "In stock"
+                            : "Out of stack"}
+                        </strong>
+                      </Col>
+                    </Row>
+                  </ListGroupItem>
+
+                  {product.countInStock > 0 && (
+                    <ListGroup>
+                      <Row>
+                        <Col>Qty</Col>
+                        <Col>
+                          <Form.Control
+                            as='select'
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
+                                <option key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup>
+                  )}
+
+                  <ListGroup.Item>
+                    <div className='d-grid'>
+                      <Button
+                        className='btn btn-block'
+                        type='button'
+                        // disable add to cart button if the product is out of stock
+                        disabled={product.countInStock === 0}
+                      >
+                        Add To Cart
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card>
+            </Col>
+          </Row>
+        )}
       </Container>
     </>
   )
