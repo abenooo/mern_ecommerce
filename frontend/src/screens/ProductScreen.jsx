@@ -16,7 +16,7 @@ import Message from "../componets/Message.js"
 import Loader from "../componets/Loader.js"
 import { useParams } from "react-router-dom"
 import { listProductDetails } from "../actions/productActions"
-const ProductScreen = () => {
+const ProductScreen = (history) => {
   // create qty and assign 0 default
   const [qty, setQty] = useState([0])
   // cretae empty  state
@@ -28,6 +28,10 @@ const ProductScreen = () => {
   useEffect(() => {
     dispatch(listProductDetails(id))
   }, [dispatch, id])
+
+  const addToCartHandler = () => {
+    history.push(`/cart/{id}?qty=${qty}`)
+  }
   return (
     <>
       <Container>
@@ -121,6 +125,7 @@ const ProductScreen = () => {
                       <Button
                         className='btn btn-block'
                         type='button'
+                        onClick={addToCartHandler}
                         // disable add to cart button if the product is out of stock
                         disabled={product.countInStock === 0}
                       >
