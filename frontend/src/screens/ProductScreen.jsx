@@ -121,7 +121,7 @@ const ProductScreen = (history) => {
 
                   <h1>select quantity</h1>
                   <select>
-                    {[...Array(product.countInStock)].map((x, i) => {
+                    {[...Array(product.countInStock.keys)].map((x, i) => {
                       return <option value={i + 1}>{i + 1}</option>
                     })}
                   </select>
