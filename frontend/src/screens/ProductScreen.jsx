@@ -9,6 +9,7 @@ import {
   Container,
   ListGroupItem,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../componets/Rating";
 import { useState, useEffect } from "react";
@@ -16,9 +17,11 @@ import Message from "../componets/Message.js";
 import Loader from "../componets/Loader.js";
 import { useParams } from "react-router-dom";
 import { listProductDetails } from "../actions/productActions";
+import { createSearchParams } from "react-router-dom";
 const ProductScreen = (history) => {
   // create qty and assign 0 default
   const [qty, setQty] = useState([0]);
+  const navigate = useNavigate();
   // cretae empty  state
   const { id } = useParams();
   console.log(id);
@@ -27,10 +30,19 @@ const ProductScreen = (history) => {
   const { loading, error, product } = productDetails;
   useEffect(() => {
     dispatch(listProductDetails(id));
-  }, [dispatch, id]);
+  }, [dispatch, id,qty]);
   console.log(product.countInStock);
   const addToCartHandler = () => {
-    history.push(`/cart/{id}?qty=${qty}`);
+    navigate(`/cart/${id}?qty=${qty}`)
+    // navigate('/cart', { state: { qty } });
+    // navigate('/cart',{id:"id",qty:'qty'});
+    // navigate({
+    //   pathname: "cart",
+    //   search: createSearchParams({
+    //     id:`{product.id}`,
+    //     qty:`${product.qty}`,
+    //   })
+    // });
   };
   return (
     <>
@@ -80,20 +92,33 @@ const ProductScreen = (history) => {
                 </ListGroup> */}
 
             {/* status */}
-            {/* <ListGroup variant='flush'>
-                  <ListGroupItem>
-                    <Row>
-                      <Col>Status</Col>
-                      <Col>
-                        <strong>
-                          $
-                          {product.countInStock > 0
-                            ? "In stock"
-                            : "Out of stack"}
-                        </strong>
-                      </Col>
-                    </Row>
-                  </ListGroupItem> */}
+            {/* <ListGroup variant='flush'> */}
+            <ListGroupItem>
+              <Row>
+                <Col>Status</Col>
+                <Col>
+                  <strong>
+                    ${product.countInStock > 0 ? "In stock" : "Out of stack"}
+                  </strong>
+                </Col>
+              </Row>
+            </ListGroupItem>
+
+            {product.countInStock > 0 && (
+              <ListGroup.Item>
+                <Row>
+                  <h1>select quantity</h1>
+                  <select value={qty} onChange={(e) => setQty(e.target.value)}>
+                    {[...Array(product.countInStock).keys()].map((x) => (
+                      <option key={x + 1} value={x + 1}>
+                        {x + 1}
+                      </option>
+                    ))}
+                  </select>
+                </Row>
+              </ListGroup.Item>
+            )}
+
             {/* drop down using react boostrap  */}
 
             {/* {product.countInStock > 0 && (
@@ -119,35 +144,37 @@ const ProductScreen = (history) => {
                     </ListGroup.Item>
                   )} */}
 
-            {/* <ListGroup.Item>
-                    <div className='d-grid'>
-                      <Button
-                        className='btn btn-block'
-                        type='button'
-                        onClick={addToCartHandler}
-                        // disable add to cart button if the product is out of stock
-                        disabled={product.countInStock === 0}
-                      >
-                        Add To Cart
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                </ListGroup> */}
+            {
+              <ListGroup.Item>
+                <div className="d-grid">
+                  <Button
+                    className="btn btn-block"
+                    type="button"
+                    onClick={addToCartHandler}
+                    // disable add to cart button if the product is out of stock
+                    disabled={product.countInStock === 0}
+                  >
+                    Add To Cart
+                  </Button>
+                </div>
+              </ListGroup.Item>
+              /*
+                </ListGroup> */
+            }
             {/* </Card>
             </Col> */}
-            <h1>select quantity</h1>
             {/* <select>
                     {[...Array(product.countInStock.keys)].map((x, i) => {
                       return <option value={i + 1}>{i + 1}</option>
                     })}
                   </select> */}
-            <select>
+            {/* <select>
               {[...Array(product.countInStock).keys()].map((x) => (
                 <option key={x + 1} value={x + 1}>
                   {x + 1}
                 </option>
               ))}
-            </select>
+            </select> */}
           </Row>
         )}
       </Container>
