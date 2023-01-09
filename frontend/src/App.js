@@ -4,6 +4,7 @@ import Header from "./componets/Header"
 import { Routes, Route } from "react-router-dom"
 import HomeScreen from "./screens/HomeScreen"
 import ProductScreen from "./screens/ProductScreen"
+import CartScreen from "./screens/CartScreen"
 const App = () => {
   return (
     <Routes>
@@ -25,6 +26,16 @@ const App = () => {
           <>
             <Header />
             <ProductScreen />
+            <Footer />
+          </>
+        }
+      />
+       <Route
+        path='/cart/:id?'
+        element={
+          <>
+            <Header />
+            <CartScreen />
             <Footer />
           </>
         }
