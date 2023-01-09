@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router-dom"
+import { Form, Link } from "react-router-dom";
 import {
   Row,
   Col,
@@ -8,40 +8,40 @@ import {
   Button,
   Container,
   ListGroupItem,
-} from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import Rating from "../componets/Rating"
-import { useState, useEffect } from "react"
-import Message from "../componets/Message.js"
-import Loader from "../componets/Loader.js"
-import { useParams } from "react-router-dom"
-import { listProductDetails } from "../actions/productActions"
+} from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Rating from "../componets/Rating";
+import { useState, useEffect } from "react";
+import Message from "../componets/Message.js";
+import Loader from "../componets/Loader.js";
+import { useParams } from "react-router-dom";
+import { listProductDetails } from "../actions/productActions";
 const ProductScreen = (history) => {
   // create qty and assign 0 default
-  const [qty, setQty] = useState([0])
+  const [qty, setQty] = useState([0]);
   // cretae empty  state
-  const { id } = useParams()
-  console.log(id)
-  const dispatch = useDispatch()
-  const productDetails = useSelector((state) => state.productDetails)
-  const { loading, error, product } = productDetails
+  const { id } = useParams();
+  console.log(id);
+  const dispatch = useDispatch();
+  const productDetails = useSelector((state) => state.productDetails);
+  const { loading, error, product } = productDetails;
   useEffect(() => {
-    dispatch(listProductDetails(id))
-  }, [dispatch, id])
-
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
+  console.log(product.countInStock);
   const addToCartHandler = () => {
-    history.push(`/cart/{id}?qty=${qty}`)
-  }
+    history.push(`/cart/{id}?qty=${qty}`);
+  };
   return (
     <>
       <Container>
-        <Link className='btn btn-light my-3 ' to='/'>
+        <Link className="btn btn-light my-3 " to="/">
           Back
         </Link>
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant='danger'>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
           <Row>
             <Col md={6}>
@@ -66,9 +66,9 @@ const ProductScreen = (history) => {
               </ListGroup>
             </Col>
 
-            <Col md={3}>
-              <Card>
-                <ListGroup variant='flush'>
+            {/* <Col md={3}>
+              <Card> */}
+            {/* <ListGroup variant='flush'>
                   <ListGroupItem>
                     <Row>
                       <Col>Price</Col>
@@ -77,10 +77,10 @@ const ProductScreen = (history) => {
                       </Col>
                     </Row>
                   </ListGroupItem>
-                </ListGroup>
+                </ListGroup> */}
 
-                {/* status */}
-                <ListGroup variant='flush'>
+            {/* status */}
+            {/* <ListGroup variant='flush'>
                   <ListGroupItem>
                     <Row>
                       <Col>Status</Col>
@@ -93,10 +93,10 @@ const ProductScreen = (history) => {
                         </strong>
                       </Col>
                     </Row>
-                  </ListGroupItem>
-                  {/* drop down using react boostrap  */}
+                  </ListGroupItem> */}
+            {/* drop down using react boostrap  */}
 
-                  {/* {product.countInStock > 0 && (
+            {/* {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
@@ -119,14 +119,7 @@ const ProductScreen = (history) => {
                     </ListGroup.Item>
                   )} */}
 
-                  <h1>select quantity</h1>
-                  <select>
-                    {[...Array(product.countInStock.keys)].map((x, i) => {
-                      return <option value={i + 1}>{i + 1}</option>
-                    })}
-                  </select>
-
-                  <ListGroup.Item>
+            {/* <ListGroup.Item>
                     <div className='d-grid'>
                       <Button
                         className='btn btn-block'
@@ -139,14 +132,27 @@ const ProductScreen = (history) => {
                       </Button>
                     </div>
                   </ListGroup.Item>
-                </ListGroup>
-              </Card>
-            </Col>
+                </ListGroup> */}
+            {/* </Card>
+            </Col> */}
+            <h1>select quantity</h1>
+            {/* <select>
+                    {[...Array(product.countInStock.keys)].map((x, i) => {
+                      return <option value={i + 1}>{i + 1}</option>
+                    })}
+                  </select> */}
+            <select>
+              {[...Array(product.countInStock).keys()].map((x) => (
+                <option key={x + 1} value={x + 1}>
+                  {x + 1}
+                </option>
+              ))}
+            </select>
           </Row>
         )}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default ProductScreen
+export default ProductScreen;
