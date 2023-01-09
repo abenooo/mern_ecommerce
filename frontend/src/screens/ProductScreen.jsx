@@ -94,9 +94,9 @@ const ProductScreen = (history) => {
                       </Col>
                     </Row>
                   </ListGroupItem>
+                  {/* drop down using react boostrap  */}
 
-
-                  {product.countInStock > 0 && (
+                  {/* {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
@@ -117,8 +117,14 @@ const ProductScreen = (history) => {
                         </Col>
                       </Row>
                     </ListGroup.Item>
-                  )}
+                  )} */}
 
+                  <h1>select quantity</h1>
+                  <select>
+                    {[...Array(product.countInStock.keys)].map((x, i) => {
+                      return <option value={i + 1}>{i + 1}</option>
+                    })}
+                  </select>
 
                   <ListGroup.Item>
                     <div className='d-grid'>
